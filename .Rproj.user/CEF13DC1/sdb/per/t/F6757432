@@ -1,0 +1,18 @@
+{
+    "contents" : "#for downloading the dataset if plot1.R was not run yet\n#\n#     fileUrl <- \"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip\"\n#     download.file(fileUrl, destfile = \"data\", mode = \"wb\")\n#     unzip(\"data\")\n#     file.remove(\"data\")\n#     rm(\"fileUrl\")\n#\n\npm25emissions <- readRDS(file = \"summarySCC_PM25.rds\")\ncodeBook <- readRDS(file = \"Source_Classification_Code.rds\")\n\n#Across the United States, how have emissions from \n#coal combustion-related sources changed from 1999–2008?\n#use whatever you want\n\nlibrary(dplyr)\n#SCC number that are related to coal AND combustion are filtered\ncoalandCombustion <-    codeBook %>%\n                        select(SCC, Short.Name) %>%\n                        filter(grepl(\"Coal\", Short.Name) & grepl(\"Comb\", Short.Name)) %>%\n                        select(SCC) %>%\n                        sapply(as.character) %>%\n                        as.character\n\n#filter for SCC according to selected variables from the codebook, \n#select appropriate columns\n#group them by year and sum the Emissions according to\n#the four different years\nyear <-     pm25emissions %>% \n            filter(SCC %in% coalandCombustion) %>% \n            select(year, Emissions) %>%\n            group_by(year) %>%\n            summarize(pm25 = sum(Emissions))\n\nlibrary(ggplot2)\n#plotting the emissions accordingly to years \n#and saving file to plot4.png\npng(file=\"plot4.png\")\nggplot(year, aes(x = year, y = pm25)) +\n      geom_histogram(stat = \"identity\", colour = \"blue\", fill = \"darkblue\") +\n      labs(y = \"Emission (in tons)\", x = \"Year\") +\n      ggtitle(\"U.S. : Total Emission from 1999 - 2008\\nFrom Coal Combustion-Related Sources\")\ndev.off()\n ",
+    "created" : 1440194611005.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1296183735",
+    "id" : "F6757432",
+    "lastKnownWriteTime" : 1440201015,
+    "path" : "~/EDACourseProject/plot4.R",
+    "project_path" : "plot4.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

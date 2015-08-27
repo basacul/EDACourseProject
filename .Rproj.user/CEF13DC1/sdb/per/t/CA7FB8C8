@@ -1,0 +1,18 @@
+{
+    "contents" : "#for downloading the dataset if plot1.R was not run yet\n#\n#     fileUrl <- \"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip\"\n#     download.file(fileUrl, destfile = \"data\", mode = \"wb\")\n#     unzip(\"data\")\n#     file.remove(\"data\")\n#     rm(\"fileUrl\")\n#\n\npm25emissions <- readRDS(file = \"summarySCC_PM25.rds\")\n#codeBook <- readRDS(file = \"Source_Classification_Code.rds\")\n\n#Have total emissions from PM2.5 decreased in the Baltimore City, \n#Maryland (fips == \"24510\") from 1999 to 2008?\n#base plot\n\nlibrary(dplyr)\n#filter for Baltimore City, select appropriate columns\n#group them by year and sum the Emissions according to\n#the four different years\nyear <- pm25emissions %>% \n        filter(fips == \"24510\") %>% \n        select(year, Emissions) %>%\n        group_by(year) %>%\n        summarize(emission = sum(Emissions))\n\n\n#plotting of emissions to year and saving plot2.png\npng(filename = \"plot2.png\")\npar(mfrow = c(1,1))\nplot(year$emission ~year$year, type=\"l\",\n     ylab = \"PM25 Emission (in tons)\", xlab = \"Year\", \n     main = \"Baltimore City : Total Emission of pm25 from 1999 to 2008\")\ndev.off()",
+    "created" : 1440194600101.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1043065830",
+    "id" : "CA7FB8C8",
+    "lastKnownWriteTime" : 1440202202,
+    "path" : "~/EDACourseProject/plot2.R",
+    "project_path" : "plot2.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

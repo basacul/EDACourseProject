@@ -1,0 +1,18 @@
+{
+    "contents" : "#Downloading and preparing data frame\nfileUrl <- \"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip\"\ndownload.file(fileUrl, destfile = \"data\", mode = \"wb\")\nunzip(\"data\")\nfile.remove(\"data\")\nrm(\"fileUrl\")\n\npm25emissions <- readRDS(file = \"summarySCC_PM25.rds\")\n#codeBook <- readRDS(file = \"Source_Classification_Code.rds\")\n\n#Have total emissions from PM2.5 decreased in the United States \n#from 1999 to 2008?\n#base plot\n\nlibrary(dplyr)\n#select columns year and Emissions and group them by year\npm25_year <- select(pm25emissions, year, Emissions)\nyear <- group_by(pm25_year, year)\nyear <- summarize(year, pm25 = sum(Emissions))\n\n#plotting of emissions to year and saving plot1.png\npng(filename = \"plot1.png\")\npar(mfrow = c(1,1))\nplot(year$pm25 ~ year$year, type=\"l\",\n     ylab = \"PM25 Emission (in tons)\", xlab = \"Year\",\n     main = \"U.S. : Total Emission of pm25 from 1999 to 2008\")\ndev.off()",
+    "created" : 1440194592284.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1503002960",
+    "id" : "2095D015",
+    "lastKnownWriteTime" : 1440202045,
+    "path" : "~/EDACourseProject/plot1.R",
+    "project_path" : "plot1.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

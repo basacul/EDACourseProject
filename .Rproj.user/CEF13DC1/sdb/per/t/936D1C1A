@@ -1,0 +1,18 @@
+{
+    "contents" : "#for downloading the dataset if plot1.R was not run yet\n#\n#     fileUrl <- \"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip\"\n#     download.file(fileUrl, destfile = \"data\", mode = \"wb\")\n#     unzip(\"data\")\n#     file.remove(\"data\")\n#     rm(\"fileUrl\")\n#\n\npm25emissions <- readRDS(file = \"summarySCC_PM25.rds\")\ncodeBook <- readRDS(file = \"Source_Classification_Code.rds\")\n\n#How have emissions from motor vehicle sources changed \n#from 1999–2008 in Baltimore City? \n#whatever you want\n\nlibrary(dplyr)\n#SCC number that are related to vehicles \nvehicle <-   codeBook %>%\n                  select(SCC, Short.Name) %>%\n                  filter(grepl(\"Veh\", Short.Name)) %>%\n                  select(SCC) %>%\n                  sapply(as.character) %>%\n                  as.character\n\n#Filtering for Baltimore City and only type == ON-ROAD\n#and from the codeBook related SCC to motor vehicles\n#select approrpiate columns, \n#group them by year and sum the Emissions according to\n#the four different years\nyear <-     pm25emissions %>% \n            filter(fips == \"24510\", type == \"ON-ROAD\", SCC %in% vehicle) %>% \n            select(year, Emissions) %>%\n            group_by(year) %>%\n            summarize(pm25 = sum(Emissions))\n\npng(file = \"plot5.png\")\n#plotting the emissions accordingly to years \n#and saving file to plot5.png\npar(mfrow = c(1,1))\nplot(year$pm25 ~ year$year, type=\"l\", pch = 19, \n     ylab = \"Emission (in tons)\", xlab = \"Year\")\ntitle(main = \"Baltimore City : Total Emissions from 1999 to 2008 \\nfrom Motor Vehicle Sources\")\ndev.off()",
+    "created" : 1440194615255.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3552557748",
+    "id" : "936D1C1A",
+    "lastKnownWriteTime" : 1440201407,
+    "path" : "~/EDACourseProject/plot5.R",
+    "project_path" : "plot5.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
