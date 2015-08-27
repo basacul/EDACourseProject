@@ -7,4 +7,4 @@ In this assignment we looked at data from the EPA which monitors the air in diff
 ## In this repository
 
 You can find all the .R scripts for each of its plots. The two .RDS files belong to the data set and provide the input for the scripts.
-
+Furthermore you can find 3 .csv files that help to understand the data for the according scripts.
